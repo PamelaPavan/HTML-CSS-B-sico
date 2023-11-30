@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width-device-width, initial-scale-1.0">
+
+	<script src="https://kit.fontawesome.com/ca14b9e588.js" crossorigin="anonymous"></script> 
+
+	<link rel="stylesheet" type="text/css" href="slide.css">
+
+	<title> Comece BEM o Seu Dia de Trabalho! </title>
+
+</head>
+
+<body>
+	<div class="slide">
+		<div class="slides">
+			
+			<! Botões para passar as imagens >
+			<div id = "voltar" class ="btn">
+				<i class="fas fa-chevron-left"></i>
+			</div>
+
+			<div id = "next" class ="btn">
+				<i class="fas fa-chevron-right"></i>
+			</div>
+
+			<! Inserção manual das imagens >
+			<div id = "atual">
+				<img class="image" src="0.png" alt="">
+			</div>
+
+			<div>
+				<img class="image" src="1.png" alt="">
+			</div>
+
+			<div>
+				<img class="image" src="2.png" alt="">
+			</div>
+
+			<div >
+				<img class="image" src="3.png" alt="">
+			</div>
+
+
+			<div >
+				<img class="image" src="4.png" alt="">
+			</div>
+
+			<div>
+				<img class="image" src="5.png" alt="">
+			</div>
+
+			<div>
+				<img class="image" src="6.png" alt="">
+			</div>
+
+			<div>
+				<img class="image" src="7.png" alt="">
+			</div>
+
+			<div>
+				<img class="image" src="8.png" alt="">
+			</div>
+
+			<div>
+				<img class="image" src="9.png" alt="">
+			</div>
+
+			<div>
+				<img class="image" src="10.png" alt="">
+			</div>
+
+			<div>
+				<img class="image" src="11.png" alt="">
+			</div>
+
+		</div>
+
+		<! Para criação das bolotas brancas do slide >
+		<div class="balls">		
+		</div>
+	</div>
+
+</body>
+
+<script>
+
+	/* VARIÁVEIS */	
+	var balls = document.querySelector('.balls')
+	var quant = document.querySelectorAll('.slides .image')
+	var atual = 0
+	var aux = 0
+	var imagem = document.getElementById('atual')
+	var next = document.getElementById('next')
+	var voltar = document.getElementById('voltar')
+	var pos = document.querySelectorAll('.balls div')
+
+
+	/* Caixa de dialogo */
+	window.alert("Clique nas setas que aparecerão para pular as imagens!\nSeta para direita -> avança slide \nSeta para esquerda <- volta slide");
+	
+	/* Criando as bolotas que mostram a posição das imagens no slide */
+	for(let i=0; i < quant.length; i++){
+		var div = document.createElement('div')
+		div.id = i
+		balls.appendChild(div)
+	}
+
+	/* Comando que adiciona o preenchimento na bolota do slide atual (as bolotas que mostram a posição no slide)*/
+	document.getElementById('0').classList.add('imgAtual')
+
+	/* Dá função ao botao 'voltar' */
+	voltar.addEventListener('click', ()=>{
+		requestFullScreen()
+		atual--
+		slide()
+	})
+
+	/* Dá função ao botao 'next' */
+	next.addEventListener('click', ()=>{		
+		if(aux==0){
+			requestFullScreen()
+			aux++
+			atual--
+		}
+		requestFullScreen()
+		atual++
+		slide()
+	})
+
+
+	document.onkeydown = checkKey;
+
+	/* Função para passar o slide por meio das setas do teclado */
+	function checkKey(e) {
+
+	    e = e || window.event;
+
+	    if (e.keyCode == '37') {
+	       // left arrow
+	       	requestFullScreen()
+	       	atual--
+			slide()
+	    }
+	    else if (e.keyCode == '39') {
+		    // right arrow
+			if(aux==0){
+				requestFullScreen()
+				aux++
+				atual--
+			}
+			requestFullScreen()
+			atual++
+			slide()
+		}
+	}
+
+
+	/* Função que deixa em tela cheia, simulando a tecla 'F11' */
+	function requestFullScreen() {
+	  var el = document.body;
+
+	  // Supports most browsers and their versions.
+	  var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen  || el.mozRequestFullScreen || el.msRequestFullScreen;
+
+	  if (requestMethod) {
+	    // Native full screen.
+	    requestMethod.call(el);
+
+	  } else if (typeof window.ActiveXObject !== "undefined") {
+		    // Older IE.
+		    var wscript = new ActiveXObject("WScript.Shell");
+
+		    if (wscript !== null) {
+		      wscript.SendKeys("{F11}");
+	    	}
+	  	}
+	}
+
+
+	/* Função que trata erros ao passar o slide  */
+	function slide(){
+		/* Ao chegar no ultimo slide, fecha a janela */
+		if(atual >= quant.length){
+			atual = close()
+		}
+
+		/* Quando estiver no primeiro slide, não terá como voltar. Apenas seguir */
+		else if(atual < 0){
+			atual = 0
+		}
+
+		/* Comando que remove o preenchimento da bolota anterior (as bolotas que mostram a posição no slide)*/
+		document.querySelector('.imgAtual').classList.remove('imgAtual')
+		
+		/* Comando que faz passar as imagens do slide */
+		imagem.style.marginLeft = -1024 * atual + 'px'
+		document.getElementById(atual).classList.add('imgAtual')
+
+
+	}
+	slide()
+
+</script>
+</html>
